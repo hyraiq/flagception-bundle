@@ -52,6 +52,11 @@ class FlagceptionExtension extends Extension
             $configurator->addActivator($container, $config['activators'][$name], $config['features']);
         }
 
+
+        if ($container->hasParameter('kernel.debug') && false === $container->getParameter('kernel.debug')) {
+            $container->removeDefinition('flagception.profiler.feature_data_collector');
+        }
+
         if ($container->hasParameter('kernel.debug') && $container->getParameter('kernel.debug')) {
             $chainDefinition = $container->getDefinition('flagception.activator.chain_activator');
             $chainDefinition->setClass(TraceableChainActivator::class);
